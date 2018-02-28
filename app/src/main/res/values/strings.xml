@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">DMIT2504Lab02</string>
+
+
+    <!--Main Activity Strings-->
+    <string name="main_activity_new_list">New List</string>
+    <string name="main_activity_new_list_edit_text">Add a new list</string>
+    <string name="main_activity_add_list_button">Add</string>
+    <string name="main_activity_preview">Preview</string>
+    <string name="list_no_data_available">No data available</string>
+    <string name="main_activity_edit_list">Edit List</string>
+
+
 </resources>
