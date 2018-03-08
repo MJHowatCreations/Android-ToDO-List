@@ -9,6 +9,7 @@
     <string name="main_activity_preview">Preview</string>
     <string name="list_no_data_available">No data available</string>
     <string name="main_activity_edit_list">Edit List</string>
+    <string name="main_activity_select">Select:</string>
 
 
 </resources>

@@ -26,18 +26,29 @@
             android:hint="@string/main_activity_new_list_edit_text" />
 
         <Button
+            android:id="@+id/main_activity_add_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/main_activity_add_list_button"
             android:layout_gravity="top"
             />
     </LinearLayout>
-
-    <Spinner
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/main_activity_spinner">
-    </Spinner>
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/main_activity_select"/>
+
+
+        <Spinner
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/main_activity_spinner" />
+    </LinearLayout>
+
 
     <TextView
         android:layout_width="wrap_content"
