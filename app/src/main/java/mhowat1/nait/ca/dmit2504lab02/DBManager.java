@@ -34,7 +34,6 @@ public class DBManager extends SQLiteOpenHelper {
     static final String C_ITEMDESCRIPTION = "description";
     static final String C_ITEMDATE = "date";
     static final String C_ITEMDONE = "done";
-    static final String C_ITEMARCHIEVE = "archieve";
 
 
     public DBManager(Context context){super(context, DB_NAME, null, DB_VERSION);}
@@ -46,12 +45,11 @@ public class DBManager extends SQLiteOpenHelper {
 
         String itemSql = "create table " + ITEM_TABLE +
                 " (" + C_ITEMID + " integer primary key autoincrement, " +
-                       C_ITEMLISTFK + " int, " +
+                       C_ITEMLISTFK + " integer, " +
                        C_ITEMNAME + " text, " +
                        C_ITEMDESCRIPTION + " text, " +
                        C_ITEMDATE + " text, " +
-                       C_ITEMDONE + " text, " +
-                       C_ITEMARCHIEVE + " text)";
+                       C_ITEMDONE + " integer default 0)"  ;
 
 
         Log.d(TAG,listSql);
@@ -73,14 +71,16 @@ public class DBManager extends SQLiteOpenHelper {
 
     }
 
-    public List<String> getAllLists() {
-        List<String> lists = new ArrayList<String>();
+    public List<ToDoList> getAllLists() {
+        List<ToDoList> lists = new ArrayList<ToDoList>();
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(LIST_TABLE, null, null, null, null, null, C_LISTID + " ASC");
         if (cursor.moveToFirst()) {
             do {
-                lists.add(cursor.getString(1));
+                lists.add(new ToDoList(
+                        cursor.getInt(cursor.getColumnIndex("_id")),
+                        cursor.getString(cursor.getColumnIndex("name"))));
             } while (cursor.moveToNext());
         }
 

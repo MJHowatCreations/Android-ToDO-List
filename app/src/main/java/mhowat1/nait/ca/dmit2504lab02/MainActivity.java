@@ -22,17 +22,18 @@ import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener{
     private static final String TAG = "MainActivity";
     SQLiteDatabase db;
-    List<String> lists;
+    List<ToDoList> lists;
     Spinner listSpinner;
     DBManager dbManager;
     ListView listView;
     ToDoListViewCursorAdapter adapter;
-    int id;
+    int selectedObjectPK;
 
 
 
@@ -63,7 +64,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private void loadSpinnerData() {
         try {
             lists = dbManager.getAllLists();
-            ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, lists);
+            List<String> toDoListNames = new ArrayList<>();
+
+            for (ToDoList object: lists)
+            {
+                toDoListNames.add(object.getListName());
+            }
+
+            ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, toDoListNames);
             listSpinner.setAdapter(dataAdapter);
         }
         catch(Exception e)
@@ -86,9 +94,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             }
             case R.id.main_activity_edit_button:
             {
-                startActivity(new Intent(this, ItemViewActivity.class));
-
-
+                Intent myIntent = new Intent(this, ItemViewActivity.class);
+                myIntent.putExtra("LISTFK", selectedObjectPK);
+                this.startActivity(myIntent);
                 break;
             }
         }
@@ -128,6 +136,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
+        ToDoList selectedObject = lists.get(i);
+        selectedObjectPK = selectedObject.getListID();
         db = dbManager.getReadableDatabase();
         TextView emptyText = (TextView)findViewById(android.R.id.empty);
         listView.setEmptyView(emptyText);
@@ -135,7 +145,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             
             Cursor cursor = db.query(DBManager.ITEM_TABLE,
                     null,
-                    DBManager.C_ITEMLISTFK + "=" + i,
+                    String.valueOf(selectedObjectPK),
                     null,
                     null,
                     null,
@@ -143,11 +153,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             startManagingCursor(cursor);
             adapter = new ToDoListViewCursorAdapter(this, cursor);
             listView.setAdapter(adapter);
-
-
-
-
-
             cursor.close();
 
         }
