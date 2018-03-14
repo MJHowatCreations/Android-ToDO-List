@@ -22,6 +22,7 @@ public class DBManager extends SQLiteOpenHelper {
     static private final int DB_VERSION = 1;
 
 
+    //1.	The local SQLite database will contain a table of current ‘active’ items identified by ListName and a table or other method to maintain ListNames.
     static final String LIST_TABLE = "list";
     static final String C_LISTID = BaseColumns._ID;
     static final String C_LISTNAME = "name";
@@ -87,4 +88,5 @@ public class DBManager extends SQLiteOpenHelper {
         db.close();
         return lists;
     }
+    //2.	The remote database will contain a table of historical archived items.
 }

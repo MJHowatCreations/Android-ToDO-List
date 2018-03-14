@@ -1,6 +1,5 @@
 package mhowat1.nait.ca.dmit2504lab02;
 
-import android.annotation.TargetApi;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
@@ -16,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
@@ -24,7 +24,7 @@ import android.widget.Toast;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener{
+public class MainActivity extends BaseActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener{
     private static final String TAG = "MainActivity";
     SQLiteDatabase db;
     List<String> lists;
@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     DBManager dbManager;
     ListView listView;
     ToDoListViewCursorAdapter adapter;
+    int id;
 
 
 
@@ -41,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         listSpinner = (Spinner) findViewById(R.id.main_activity_spinner);
-        listView = (ListView)findViewById(R.id.todo_item_list_view);
+        listView = (ListView) findViewById(R.id.todo_item_list_view);
 
         Button btnAdd = (Button) findViewById(R.id.main_activity_add_button);
         Button btnEdit = (Button) findViewById(R.id.main_activity_edit_button);
@@ -57,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
+    //4.	There will be a view that contains all of the local ListNames and allow one to be selected as the current list
 
     private void loadSpinnerData() {
         try {
@@ -84,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
             case R.id.main_activity_edit_button:
             {
-                startActivity(new Intent(this, ListView.class));
+                startActivity(new Intent(this, ItemViewActivity.class));
 
 
                 break;
@@ -93,11 +95,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    //3.	Add functionality that allows the user to add a ListName
 
     private void addNewListItem() {
         EditText newListEditText = (EditText)findViewById(R.id.main_activity_edit_text);
         String newListName = newListEditText.getText().toString();
-        if (newListName.trim() == "" )
+        if (newListName.trim().equals(""))
         {
             Log.d(TAG, "new list name is empty");
             Toast.makeText(this, "Error: Must have a longer name for list", Toast.LENGTH_LONG).show();
@@ -124,20 +127,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
         db = dbManager.getReadableDatabase();
         TextView emptyText = (TextView)findViewById(android.R.id.empty);
         listView.setEmptyView(emptyText);
         try{
+            
             Cursor cursor = db.query(DBManager.ITEM_TABLE,
                     null,
-                    null,
-                    null,
-                    DBManager.C_ITEMLISTFK,
                     DBManager.C_ITEMLISTFK + "=" + i,
+                    null,
+                    null,
+                    null,
                     DBManager.C_ITEMID + " DESC");
             startManagingCursor(cursor);
             adapter = new ToDoListViewCursorAdapter(this, cursor);
             listView.setAdapter(adapter);
+
 
 
 

@@ -4,6 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="mhowat1.nait.ca.dmit2504lab02.ListView">
+    tools:context="mhowat1.nait.ca.dmit2504lab02.ItemViewActivity">
 
 </android.support.constraint.ConstraintLayout>
