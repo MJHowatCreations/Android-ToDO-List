@@ -72,16 +72,15 @@ public class DBManager extends SQLiteOpenHelper {
 
     }
 
-    public List<String> getAllLists(){
+    public List<String> getAllLists() {
         List<String> lists = new ArrayList<String>();
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.query(LIST_TABLE, null, null, null, null, null, C_LISTID + " DESC");
-        if(cursor.moveToFirst())
-        {
+        Cursor cursor = db.query(LIST_TABLE, null, null, null, null, null, C_LISTID + " ASC");
+        if (cursor.moveToFirst()) {
             do {
-                lists.add(cursor.getString(0));
-            }while (cursor.moveToNext());
+                lists.add(cursor.getString(1));
+            } while (cursor.moveToNext());
         }
 
         cursor.close();

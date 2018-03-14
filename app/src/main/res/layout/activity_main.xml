@@ -56,17 +56,17 @@
         android:text="@string/main_activity_preview"
         android:layout_gravity="center_horizontal"/>
 
-    <ScrollView
+    <ListView
+        android:id="@+id/todo_item_list_view"
         android:layout_width="match_parent"
         android:layout_height="350dp">
+    </ListView>
 
-        <TextView
-            android:id="@id/android:empty"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="@string/list_no_data_available" />
-    </ScrollView>
+    <TextView
+        android:id="@android:id/empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/empty_list" />
     <Button
         android:id="@+id/main_activity_edit_button"
         android:layout_width="wrap_content"
