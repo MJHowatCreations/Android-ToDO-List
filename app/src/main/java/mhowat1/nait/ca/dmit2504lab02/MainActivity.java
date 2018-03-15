@@ -33,7 +33,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     DBManager dbManager;
     ListView listView;
     ToDoListViewCursorAdapter adapter;
-    int selectedObjectPK;
+    int selectedObjectPK = 0;
 
 
 
@@ -145,7 +145,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             
             Cursor cursor = db.query(DBManager.ITEM_TABLE,
                     null,
-                    String.valueOf(selectedObjectPK),
+                    DBManager.C_ITEMLISTFK + " = " + String.valueOf(selectedObjectPK),
                     null,
                     null,
                     null,

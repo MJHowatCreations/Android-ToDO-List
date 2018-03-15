@@ -35,9 +35,11 @@ public class ToDoListViewCursorAdapter extends SimpleCursorAdapter {
     @Override
     public void bindView(View row, Context context, Cursor cursor) {
         super.bindView(row, context, cursor);
+        /*
         String strDate = cursor.getString(cursor.getColumnIndex(DBManager.C_ITEMDATE));
         String strShort = strDate.substring(7,17);
         TextView textView = (TextView)row.findViewById(R.id.todo_item_date); //the position in the cell for date
         textView.setText(strShort);
+        */
     }
 }

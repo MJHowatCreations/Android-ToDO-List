@@ -22,6 +22,11 @@ public class BaseActivity extends AppCompatActivity {
                 Intent intent = new Intent(this, MyPreferenceActivity.class);
                 this.startActivity(intent);
             }
+            case R.id.menu_item_main_page:
+            {
+                Intent intent = new Intent(this, MainActivity.class);
+                this.startActivity(intent);
+            }
         }
         return true;
     }

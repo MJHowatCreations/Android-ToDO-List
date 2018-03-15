@@ -86,51 +86,55 @@ public class ItemViewActivity extends BaseActivity implements View.OnClickListen
         }
         else
         {
+            ContentValues values = new ContentValues();
+            values.put(DBManager.C_ITEMLISTFK, listIDFK);
+            values.put(DBManager.C_ITEMNAME, toDoName);
+            values.put(DBManager.C_ITEMDESCRIPTION, toDoDescription);
+            values.put(DBManager.C_ITEMDATE, String.valueOf(new Date().getTime()));
+            values.put(DBManager.C_ITEMDONE, 0);
+            db = dbManager.getWritableDatabase();
             //5.	There will be a view that allows the addition of a new item. Each item will contain a description, association with a title, created date (as string if desired) and completed flag.
             try {
-                ContentValues values = new ContentValues();
-                values.put(DBManager.C_ITEMLISTFK, listIDFK);
-                values.put(DBManager.C_ITEMNAME, toDoName);
-                values.put(DBManager.C_ITEMDESCRIPTION, toDoDescription);
-                values.put(DBManager.C_ITEMDATE, String.valueOf(new Date().getTime()));
-                db = dbManager.getWritableDatabase();
-                db.insertOrThrow(DBManager.ITEM_TABLE, null, values);
-                toDoNameEditText.setText("");
-                toDoDescriptionEditText.setText("");
-                db.close();
 
+                db.insertOrThrow(DBManager.ITEM_TABLE, null, values);
 
             }catch (SQLException e){
+                Toast.makeText(this, "Error:" + e, Toast.LENGTH_LONG).show();
 
             }
 
 
         }
+        toDoNameEditText.setText("");
+        toDoDescriptionEditText.setText("");
+        db.close();
+
         refreshList();
 
     }
 
     //6.	There will be a view that displays all active items (within a list) and allows them to be selected for editing (update, delete and archive)
     private void refreshList() {
-        db = dbManager.getReadableDatabase();
-        try{
+            db = dbManager.getReadableDatabase();
+            try{
 
-            Cursor cursor = db.query(DBManager.ITEM_TABLE,
-                    null,
-                    String.valueOf(listIDFK),
-                    null,
-                    null,
-                    null,
-                    DBManager.C_ITEMID + " DESC");
-            startManagingCursor(cursor);
-            adapter = new ToDoListViewCursorAdapter(this, cursor);
-            listView.setAdapter(adapter);
-            cursor.close();
+                Cursor cursor = db.query(DBManager.ITEM_TABLE,
+                        null,
+                        DBManager.C_ITEMLISTFK + "=" + String.valueOf(listIDFK),
+                        null,
+                        null,
+                        null,
+                        DBManager.C_ITEMID + " DESC");
+                startManagingCursor(cursor);
+                adapter = new ToDoListViewCursorAdapter(this, cursor);
+                listView.setAdapter(adapter);
+                cursor.close();
 
-        }
-        catch(SQLException e){
+            }
+            catch(SQLException e){
+                Toast.makeText(this, "Error:" + e, Toast.LENGTH_LONG).show();
 
-        }
+            }
 
 
         db.close();
