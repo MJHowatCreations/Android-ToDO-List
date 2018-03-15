@@ -38,8 +38,8 @@ public class ToDoListViewCursorAdapter extends SimpleCursorAdapter {
         /*
         String strDate = cursor.getString(cursor.getColumnIndex(DBManager.C_ITEMDATE));
         String strShort = strDate.substring(7,17);
-        TextView textView = (TextView)row.findViewById(R.id.todo_item_date); //the position in the cell for date
-        textView.setText(strShort);
-        */
+      */  TextView textView = (TextView)row.findViewById(R.id.todo_item_date); //the position in the cell for date
+       // textView.setText(strShort);
+
     }
 }

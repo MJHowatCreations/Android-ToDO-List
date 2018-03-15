@@ -1,11 +1,13 @@
 package mhowat1.nait.ca.dmit2504lab02;
 
+import android.app.LauncherActivity;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,6 +26,7 @@ public class ItemViewActivity extends BaseActivity implements View.OnClickListen
     DBManager dbManager;
     ListView listView;
     ToDoListViewCursorAdapter adapter;
+    String TAG = "Debugging";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,7 +99,8 @@ public class ItemViewActivity extends BaseActivity implements View.OnClickListen
             //5.	There will be a view that allows the addition of a new item. Each item will contain a description, association with a title, created date (as string if desired) and completed flag.
             try {
 
-                db.insertOrThrow(DBManager.ITEM_TABLE, null, values);
+                long count = db.insertOrThrow(DBManager.ITEM_TABLE, null, values);
+                Log.d(TAG, "count = " + count);
 
             }catch (SQLException e){
                 Toast.makeText(this, "Error:" + e, Toast.LENGTH_LONG).show();
@@ -120,15 +124,26 @@ public class ItemViewActivity extends BaseActivity implements View.OnClickListen
 
                 Cursor cursor = db.query(DBManager.ITEM_TABLE,
                         null,
-                        DBManager.C_ITEMLISTFK + "=" + String.valueOf(listIDFK),
+                        null,
                         null,
                         null,
                         null,
                         DBManager.C_ITEMID + " DESC");
+
+                String name, description, date;
+
+                while(cursor.moveToNext())
+                {
+                    name = cursor.getString(cursor.getColumnIndex(DBManager.C_ITEMNAME));
+                    description = cursor.getString(cursor.getColumnIndex(DBManager.C_ITEMDESCRIPTION));
+                    date = cursor.getString(cursor.getColumnIndex(DBManager.C_ITEMDATE));
+
+                }
                 startManagingCursor(cursor);
                 adapter = new ToDoListViewCursorAdapter(this, cursor);
                 listView.setAdapter(adapter);
                 cursor.close();
+
 
             }
             catch(SQLException e){
