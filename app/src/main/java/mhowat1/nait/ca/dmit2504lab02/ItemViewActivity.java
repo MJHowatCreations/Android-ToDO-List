@@ -124,25 +124,15 @@ public class ItemViewActivity extends BaseActivity implements View.OnClickListen
 
                 Cursor cursor = db.query(DBManager.ITEM_TABLE,
                         null,
-                        null,
+                        DBManager.C_ITEMLISTFK + " = " + String.valueOf(listIDFK),
                         null,
                         null,
                         null,
                         DBManager.C_ITEMID + " DESC");
 
-                String name, description, date;
-
-                while(cursor.moveToNext())
-                {
-                    name = cursor.getString(cursor.getColumnIndex(DBManager.C_ITEMNAME));
-                    description = cursor.getString(cursor.getColumnIndex(DBManager.C_ITEMDESCRIPTION));
-                    date = cursor.getString(cursor.getColumnIndex(DBManager.C_ITEMDATE));
-
-                }
-                startManagingCursor(cursor);
-                adapter = new ToDoListViewCursorAdapter(this, cursor);
+                adapter = new ToDoListViewCursorAdapter(this, cursor, 0);
                 listView.setAdapter(adapter);
-                cursor.close();
+
 
 
             }
@@ -150,7 +140,6 @@ public class ItemViewActivity extends BaseActivity implements View.OnClickListen
                 Toast.makeText(this, "Error:" + e, Toast.LENGTH_LONG).show();
 
             }
-
 
         db.close();
     }
