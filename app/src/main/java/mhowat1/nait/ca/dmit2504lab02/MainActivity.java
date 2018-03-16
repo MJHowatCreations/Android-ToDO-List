@@ -150,10 +150,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                     null,
                     null,
                     DBManager.C_ITEMID + " DESC");
-            startManagingCursor(cursor);
-            adapter = new ToDoListViewCursorAdapter(this, cursor);
+            adapter = new ToDoListViewCursorAdapter(this, cursor, 0);
             listView.setAdapter(adapter);
-            cursor.close();
 
         }
         catch(SQLException e){
