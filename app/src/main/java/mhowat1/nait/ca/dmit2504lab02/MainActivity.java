@@ -155,6 +155,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
         }
         catch(SQLException e){
+            Toast.makeText(this, "Error:" + e, Toast.LENGTH_LONG).show();
 
         }
 
@@ -169,3 +170,4 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     }
 
 }
+//
