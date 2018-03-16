@@ -16,8 +16,7 @@
     <ListView
         android:id="@+id/item_activity_list"
         android:layout_width="match_parent"
-        android:layout_height="350dp"
-        android:background="#cacaca">
+        android:layout_height="350dp">
     </ListView>
     <TextView
         android:layout_width="wrap_content"

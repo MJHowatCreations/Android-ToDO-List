@@ -19,7 +19,7 @@ public class DBManager extends SQLiteOpenHelper {
 
     static final String TAG = "DBManager";
     static final String DB_NAME = "todolist.db";
-    static private final int DB_VERSION = 3;
+    static private final int DB_VERSION = 2;
 
 
     //1.	The local SQLite database will contain a table of current ‘active’ items identified by ListName and a table or other method to maintain ListNames.
@@ -49,7 +49,7 @@ public class DBManager extends SQLiteOpenHelper {
                        C_ITEMNAME + " text, " +
                        C_ITEMDESCRIPTION + " text, " +
                        C_ITEMDATE + " text, " +
-                       C_ITEMDONE + " integer)"  ;
+                       C_ITEMDONE + " integer default 0)"  ;
 
 
         Log.d(TAG,listSql);

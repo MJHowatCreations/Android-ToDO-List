@@ -31,6 +31,7 @@ public class ToDoListViewCursorAdapter extends CursorAdapter {
     }
 
     @Override
+<<<<<<< HEAD
     public View newView(Context context, Cursor cursor, ViewGroup viewGroup) {
         return cursorInflater.inflate(R.layout.to_do_item_row, viewGroup, false);
     }
@@ -47,6 +48,16 @@ public class ToDoListViewCursorAdapter extends CursorAdapter {
         textViewItemName.setText(itemName);
         textViewDescription.setText(description);
         textViewDate.setText(date);
+=======
+    public void bindView(View row, Context context, Cursor cursor) {
+        super.bindView(row, context, cursor);
+        /*
+        String strDate = cursor.getString(cursor.getColumnIndex(DBManager.C_ITEMDATE));
+        String strShort = strDate.substring(7,17);
+        TextView textView = (TextView)row.findViewById(R.id.todo_item_date); //the position in the cell for date
+        textView.setText(strShort);
+        */
+>>>>>>> parent of d702a99... Thursday
     }
 
 
