@@ -14,8 +14,16 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -149,6 +157,36 @@ public class ItemViewActivity extends BaseActivity implements View.OnClickListen
 
 
     //7.	Archived items will be deleted from the local database and stored on the remote server. Each archived item will contain a username, password, content, list title, created date and completed flag (0 for false, 1 for true).  All will be posted as Strings.  The username and password will be unique on the remote server.  Creating a new username and/or password will effectively create a new account on the remote server.  The keys for the post parameters will be “LIST_TITLE, CONTENT, COMPLETED_FLAG, ALIAS, PASSWORD and CREATED_DATE”.
+
+    private void postToServer(){
+        String userName = settings.getString("username", "Matthew");
+        String password = settings.getString("user_password", "*****");
+        String webServer = "http://www.youcode.ca/Lab02Post";
+        for (item: archieveItemList) {
+
+            try
+            {
+                HttpClient client = new DefaultHttpClient();
+                HttpPost post = new HttpPost(webServer);
+                List<NameValuePair> postParameters = new ArrayList<NameValuePair>();
+                postParameters.add(new BasicNameValuePair("LIST_TITLE", chatReview));
+                postParameters.add(new BasicNameValuePair("CONTENT", userName));
+                postParameters.add(new BasicNameValuePair("COMPLETED_FLAG", chatNominee));
+                postParameters.add(new BasicNameValuePair("ALIAS", userName));
+                postParameters.add(new BasicNameValuePair("PASSWORD", password));
+                postParameters.add(new BasicNameValuePair("CREATED_DATE", password));
+                UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(postParameters);
+                post.setEntity(formEntity);
+                client.execute(post);
+            }
+            catch(Exception e)
+            {
+                Toast.makeText(this, "Error:" + e, Toast.LENGTH_LONG).show();
+            }
+
+        }
+
+    }
 
     //8.	There will be a view that displays all of the archived items.  Use a query string with the following format: http://www.youcode.ca/Lab02Get.jsp?ALIAS=username&PASSWORD=password.  The data will be returned as four strings per item in the order of “Posted Date, List Title, Content, and the Completed Flag as a 1 or 0.
 

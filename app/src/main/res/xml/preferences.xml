@@ -2,9 +2,9 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <EditTextPreference
-        android:key="reviewer_name"
-        android:title="Reviewer"
-        android:summary="Use this to change your Alias."
+        android:key="username"
+        android:title="Username"
+        android:summary="Use this to change your username."
         />
     <EditTextPreference
         android:key="user_password"
