@@ -1,37 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="#FFF">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
+
+    <TextView
             android:id="@+id/todo_item_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#000"
-            android:layout_gravity="left" />
-        <TextView
+            android:layout_alignParentLeft="true"
+        android:layout_marginRight="5dp"
+        />
+
+    <TextView
             android:id="@+id/todo_item_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:textColor="#000"/>
-
-    </LinearLayout>
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@id/todo_item_name"
+            android:textColor="#000"
+        />
     <TextView
         android:id="@+id/todo_item_description"
+        android:layout_below="@id/todo_item_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="#000"/>
 
+    <CheckBox
+        android:id="@+id/todo_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"/>
 
 
 
 
 
-</LinearLayout>
+
+</RelativeLayout>

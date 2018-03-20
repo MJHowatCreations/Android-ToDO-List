@@ -150,7 +150,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                     null,
                     null,
                     DBManager.C_ITEMID + " DESC");
-            adapter = new ToDoListViewCursorAdapter(this, cursor, 0);
+            adapter = new MainActivityAdapter(this, cursor, 0);
             listView.setAdapter(adapter);
 
         }

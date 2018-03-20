@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
+/*
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -21,6 +22,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
+*/
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -46,12 +48,12 @@ public class ItemViewActivity extends BaseActivity implements View.OnClickListen
 
 
         Button addBtn = (Button) findViewById(R.id.item_activity_add_button);
-        Button updateBtn = (Button) findViewById(R.id.item_activity_update_button);
+        Button completeBtn = (Button) findViewById(R.id.item_activity_complete_button);
         Button deleteBtn = (Button) findViewById(R.id.item_activity_delete_button);
         Button archiveBtn = (Button) findViewById(R.id.item_activity_archive_button);
         listView = (ListView) findViewById(R.id.item_activity_list);
         addBtn.setOnClickListener(this);
-        updateBtn.setOnClickListener(this);
+        completeBtn.setOnClickListener(this);
         deleteBtn.setOnClickListener(this);
         archiveBtn.setOnClickListener(this);
 
@@ -67,8 +69,9 @@ public class ItemViewActivity extends BaseActivity implements View.OnClickListen
                 addNewToDoItem();
                 break;
             }
-            case R.id.item_activity_update_button:
+            case R.id.item_activity_complete_button:
             {
+                markAsComplete();
                 break;
             }
             case R.id.item_activity_delete_button:
@@ -84,6 +87,26 @@ public class ItemViewActivity extends BaseActivity implements View.OnClickListen
         }
 
     }
+
+    private void markAsComplete() {
+
+        List<Integer> itemIDs = adapter.checkBoxState;
+        db = dbManager.getWritableDatabase();
+        try {
+            for (Integer id : itemIDs) {
+                ContentValues values = new ContentValues();
+                values.put(DBManager.C_ITEMDONE, 1);
+                db.update(DBManager.ITEM_TABLE, values, DBManager.C_ITEMID + " = " + id, null);
+            }
+            ;
+        }
+        catch (SQLException e){
+            Toast.makeText(this, "Error:" + e, Toast.LENGTH_LONG).show();
+        }
+        refreshList();
+
+    }
+
 
     private void addNewToDoItem() {
         EditText toDoNameEditText = (EditText)findViewById(R.id.item_activity_edit_name);
@@ -102,7 +125,7 @@ public class ItemViewActivity extends BaseActivity implements View.OnClickListen
             values.put(DBManager.C_ITEMNAME, toDoName);
             values.put(DBManager.C_ITEMDESCRIPTION, toDoDescription);
             values.put(DBManager.C_ITEMDATE, String.valueOf(new Date().getTime()));
-            values.put(DBManager.C_ITEMDONE, 0);
+            values.put(DBManager.C_ITEMDONE, 1);
             db = dbManager.getWritableDatabase();
             //5.	There will be a view that allows the addition of a new item. Each item will contain a description, association with a title, created date (as string if desired) and completed flag.
             try {
@@ -154,7 +177,7 @@ public class ItemViewActivity extends BaseActivity implements View.OnClickListen
 
 
 
-
+/*
 
     //7.	Archived items will be deleted from the local database and stored on the remote server. Each archived item will contain a username, password, content, list title, created date and completed flag (0 for false, 1 for true).  All will be posted as Strings.  The username and password will be unique on the remote server.  Creating a new username and/or password will effectively create a new account on the remote server.  The keys for the post parameters will be “LIST_TITLE, CONTENT, COMPLETED_FLAG, ALIAS, PASSWORD and CREATED_DATE”.
 
@@ -187,7 +210,7 @@ public class ItemViewActivity extends BaseActivity implements View.OnClickListen
         }
 
     }
-
+*/
     //8.	There will be a view that displays all of the archived items.  Use a query string with the following format: http://www.youcode.ca/Lab02Get.jsp?ALIAS=username&PASSWORD=password.  The data will be returned as four strings per item in the order of “Posted Date, List Title, Content, and the Completed Flag as a 1 or 0.
 
     //9.	Implement preferences to store your username, password, two colors (radio list) and a font size. Be sure to provide a default values.

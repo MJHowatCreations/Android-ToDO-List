@@ -53,8 +53,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <Button
-            android:text="Update"
-            android:id="@+id/item_activity_update_button"
+            android:text="Mark Complete"
+            android:id="@+id/item_activity_complete_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             />
