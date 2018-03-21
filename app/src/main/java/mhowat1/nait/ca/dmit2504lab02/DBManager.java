@@ -2,10 +2,12 @@ package mhowat1.nait.ca.dmit2504lab02;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,18 +76,21 @@ public class DBManager extends SQLiteOpenHelper {
     public List<ToDoList> getAllLists() {
         List<ToDoList> lists = new ArrayList<ToDoList>();
         SQLiteDatabase db = this.getReadableDatabase();
+        try {
+            Cursor cursor = db.query(LIST_TABLE, null, null, null, null, null, C_LISTID + " ASC");
+            if (cursor.moveToFirst()) {
+                do {
+                    lists.add(new ToDoList(
+                            cursor.getInt(cursor.getColumnIndex("_id")),
+                            cursor.getString(cursor.getColumnIndex("name"))));
+                } while (cursor.moveToNext());
+            }
 
-        Cursor cursor = db.query(LIST_TABLE, null, null, null, null, null, C_LISTID + " ASC");
-        if (cursor.moveToFirst()) {
-            do {
-                lists.add(new ToDoList(
-                        cursor.getInt(cursor.getColumnIndex("_id")),
-                        cursor.getString(cursor.getColumnIndex("name"))));
-            } while (cursor.moveToNext());
+        }
+        finally {
+            db.close();
         }
 
-        cursor.close();
-        db.close();
         return lists;
     }
     //2.	The remote database will contain a table of historical archived items.

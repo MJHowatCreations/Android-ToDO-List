@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 /*
 import org.apache.http.NameValuePair;
@@ -31,6 +32,7 @@ import java.util.List;
 
 public class ItemViewActivity extends BaseActivity implements View.OnClickListener {
 
+    TextView headerText;
     int listIDFK;
     SQLiteDatabase db;
     DBManager dbManager;
@@ -46,7 +48,7 @@ public class ItemViewActivity extends BaseActivity implements View.OnClickListen
         listIDFK = getIntent().getExtras().getInt("LISTFK");
         dbManager = new DBManager(this);
 
-
+        headerText = (TextView) findViewById(R.id.item_activity_header);
         Button addBtn = (Button) findViewById(R.id.item_activity_add_button);
         Button completeBtn = (Button) findViewById(R.id.item_activity_complete_button);
         Button deleteBtn = (Button) findViewById(R.id.item_activity_delete_button);
@@ -56,8 +58,30 @@ public class ItemViewActivity extends BaseActivity implements View.OnClickListen
         completeBtn.setOnClickListener(this);
         deleteBtn.setOnClickListener(this);
         archiveBtn.setOnClickListener(this);
+        queryHeaderName();
 
         refreshList();
+    }
+
+    private void queryHeaderName() {
+        db = dbManager.getReadableDatabase();
+        try {
+            Cursor cursor = db.query(DBManager.LIST_TABLE,
+                    new String[] {DBManager.C_ITEMNAME},
+                    DBManager.C_LISTID + " = " + listIDFK,
+                    null,
+                    null,
+                    null,
+                    null
+            );
+            if (cursor != null)
+                cursor.moveToFirst();
+            headerText.setText(cursor.getString(0));
+        }
+        finally {
+            db.close();
+        }
+
     }
 
     @Override
@@ -71,7 +95,7 @@ public class ItemViewActivity extends BaseActivity implements View.OnClickListen
             }
             case R.id.item_activity_complete_button:
             {
-                markAsComplete();
+               //markAsComplete();
                 break;
             }
             case R.id.item_activity_delete_button:
@@ -87,10 +111,10 @@ public class ItemViewActivity extends BaseActivity implements View.OnClickListen
         }
 
     }
-
+/*
     private void markAsComplete() {
 
-        List<Integer> itemIDs = adapter.checkBoxState;
+
         db = dbManager.getWritableDatabase();
         try {
             for (Integer id : itemIDs) {
@@ -106,6 +130,7 @@ public class ItemViewActivity extends BaseActivity implements View.OnClickListen
         refreshList();
 
     }
+    */
 
 
     private void addNewToDoItem() {
@@ -137,12 +162,13 @@ public class ItemViewActivity extends BaseActivity implements View.OnClickListen
                 Toast.makeText(this, "Error:" + e, Toast.LENGTH_LONG).show();
 
             }
-
-
+            finally {
+                toDoNameEditText.setText("");
+                toDoDescriptionEditText.setText("");
+                db.close();
+            }
         }
-        toDoNameEditText.setText("");
-        toDoDescriptionEditText.setText("");
-        db.close();
+
 
         refreshList();
 
@@ -160,19 +186,21 @@ public class ItemViewActivity extends BaseActivity implements View.OnClickListen
                         null,
                         null,
                         DBManager.C_ITEMID + " DESC");
-
-                adapter = new ToDoListViewCursorAdapter(this, cursor, 0);
-                listView.setAdapter(adapter);
-
-
+                if (cursor.getCount() >= 0) {
+                    adapter = new ToDoListViewCursorAdapter(this, cursor, 0);
+                    listView.setAdapter(adapter);
+                }
 
             }
             catch(SQLException e){
                 Toast.makeText(this, "Error:" + e, Toast.LENGTH_LONG).show();
 
             }
+            finally {
+                db.close();
+            }
 
-        db.close();
+
     }
 
 

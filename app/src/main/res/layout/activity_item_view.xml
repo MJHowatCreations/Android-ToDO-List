@@ -12,7 +12,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:id="@+id/item_activity_header"
-        android:text="Placeholder"/>
+        android:text="Placeholder"
+        android:textSize="36dp"/>
     <ListView
         android:id="@+id/item_activity_list"
         android:layout_width="match_parent"

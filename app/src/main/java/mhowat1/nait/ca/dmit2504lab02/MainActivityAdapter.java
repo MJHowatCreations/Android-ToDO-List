@@ -30,9 +30,11 @@ public class MainActivityAdapter extends ToDoListViewCursorAdapter {
 
     @Override
     public void bindView(View row, Context context, Cursor cursor) {
-        String itemName = cursor.getString(cursor.getColumnIndex(DBManager.C_ITEMNAME));
+
+        String mainName = cursor.getString(cursor.getColumnIndex(DBManager.C_ITEMNAME));
         TextView textViewItemName = (TextView) row.findViewById(R.id.todo_item_name);
-        textViewItemName.setText(itemName);
+
+        textViewItemName.setText(mainName);
 
     }
 }

@@ -150,8 +150,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                     null,
                     null,
                     DBManager.C_ITEMID + " DESC");
-            adapter = new MainActivityAdapter(this, cursor, 0);
-            listView.setAdapter(adapter);
+            if (cursor.getCount() >= 0) {
+                adapter = new MainActivityAdapter(this, cursor, 0);
+                listView.setAdapter(adapter);
+            }
+
 
         }
         catch(SQLException e){

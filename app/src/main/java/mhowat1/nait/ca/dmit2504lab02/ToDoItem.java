@@ -9,14 +9,16 @@ public class ToDoItem {
     int listID_FK;
     String name;
     String description;
-    Boolean completed;
+    String date;
+    int completed;
 
-    public ToDoItem(int itemID, int listID_FK, String name, String description) {
+    public ToDoItem(int itemID, int listID_FK, String name, String description, String date, int completed) {
         this.itemID = itemID;
         this.listID_FK = listID_FK;
         this.name = name;
         this.description = description;
-        this.completed = false;
+        this.date = date;
+        this.completed = completed;
     }
 
     public int getItemID() {
@@ -35,7 +37,18 @@ public class ToDoItem {
         return description;
     }
 
-    public Boolean getCompleted() {
+    public void setCompleted(int completed) {
+        this.completed = completed;
+    }
+
+    public int getCompleted() {
         return completed;
     }
+
+
+    public String getDate() {
+        return date;
+    }
 }
+
+
