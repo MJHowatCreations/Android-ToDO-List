@@ -13,6 +13,7 @@ import android.widget.CompoundButton;
 import android.widget.CursorAdapter;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import java.util.ArrayList;
@@ -33,6 +34,7 @@ public class ToDoListViewCursorAdapter extends CursorAdapter {
     String description;
     String date;
     int completed;
+    CheckBox checkBox;
 
 
 
@@ -53,7 +55,7 @@ public class ToDoListViewCursorAdapter extends CursorAdapter {
 
     @Override
     public void bindView(View row, Context context, final Cursor cursor) {
-
+        checkBox = (CheckBox)row.findViewById(R.id.todo_checkbox);
 
         itemID = cursor.getInt(cursor.getColumnIndex(DBManager.C_ITEMID));
         listID_FK = cursor.getInt(cursor.getColumnIndex(DBManager.C_ITEMLISTFK));
@@ -63,7 +65,22 @@ public class ToDoListViewCursorAdapter extends CursorAdapter {
             date = cursor.getString(cursor.getColumnIndex(DBManager.C_ITEMDATE));
              toDoItemsList.add(new ToDoItem(itemID,listID_FK,name,description,date,completed));
 
+            row.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    Toast.makeText(view.getContext(), "box has been long clicked", Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+            });
 
+             checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                final boolean isChecked = checkBox.isChecked();
+                // Do something here.
+                Toast.makeText(arg0.getContext(), "box has been checked", Toast.LENGTH_SHORT).show();
+            }
+        });
         TextView textViewItemName = (TextView) row.findViewById(R.id.todo_item_name);
         TextView textViewDescription = (TextView) row.findViewById(R.id.todo_item_description);
         TextView textViewDate = (TextView) row.findViewById(R.id.todo_item_date);
