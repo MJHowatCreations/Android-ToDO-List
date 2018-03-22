@@ -12,6 +12,16 @@ public class ToDoItem {
     String date;
     int completed;
 
+    public boolean isChecked() {
+        return checked;
+    }
+
+    public void setChecked(boolean checked) {
+        this.checked = checked;
+    }
+
+    private boolean checked;
+
     public ToDoItem(int itemID, int listID_FK, String name, String description, String date, int completed) {
         this.itemID = itemID;
         this.listID_FK = listID_FK;

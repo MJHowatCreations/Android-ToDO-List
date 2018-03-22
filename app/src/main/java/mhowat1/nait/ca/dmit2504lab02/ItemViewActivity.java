@@ -15,7 +15,7 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-/*
+
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -23,10 +23,10 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
-*/
-
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -39,6 +39,7 @@ public class ItemViewActivity extends BaseActivity implements View.OnClickListen
     ListView listView;
     ToDoListViewCursorAdapter adapter;
     String TAG = "Debugging";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,6 +139,9 @@ public class ItemViewActivity extends BaseActivity implements View.OnClickListen
         EditText toDoDescriptionEditText = (EditText)findViewById(R.id.item_activity_edit_description);
         String toDoName = toDoNameEditText.getText().toString();
         String toDoDescription = toDoDescriptionEditText.getText().toString();
+        Date datetime = Calendar.getInstance().getTime();
+        SimpleDateFormat formatDate = new SimpleDateFormat("DD/MM/YYYY");
+        String toDoDate = formatDate.format(datetime);
 
         if ((toDoName.trim().equals("")) || (toDoDescription.trim().equals("")))
         {
@@ -149,7 +153,7 @@ public class ItemViewActivity extends BaseActivity implements View.OnClickListen
             values.put(DBManager.C_ITEMLISTFK, listIDFK);
             values.put(DBManager.C_ITEMNAME, toDoName);
             values.put(DBManager.C_ITEMDESCRIPTION, toDoDescription);
-            values.put(DBManager.C_ITEMDATE, String.valueOf(new Date().getTime()));
+            values.put(DBManager.C_ITEMDATE, toDoDate);
             values.put(DBManager.C_ITEMDONE, 1);
             db = dbManager.getWritableDatabase();
             //5.	There will be a view that allows the addition of a new item. Each item will contain a description, association with a title, created date (as string if desired) and completed flag.
@@ -205,7 +209,7 @@ public class ItemViewActivity extends BaseActivity implements View.OnClickListen
 
 
 
-/*
+
 
     //7.	Archived items will be deleted from the local database and stored on the remote server. Each archived item will contain a username, password, content, list title, created date and completed flag (0 for false, 1 for true).  All will be posted as Strings.  The username and password will be unique on the remote server.  Creating a new username and/or password will effectively create a new account on the remote server.  The keys for the post parameters will be “LIST_TITLE, CONTENT, COMPLETED_FLAG, ALIAS, PASSWORD and CREATED_DATE”.
 
@@ -213,19 +217,19 @@ public class ItemViewActivity extends BaseActivity implements View.OnClickListen
         String userName = settings.getString("username", "Matthew");
         String password = settings.getString("user_password", "*****");
         String webServer = "http://www.youcode.ca/Lab02Post";
-        for (item: archieveItemList) {
+        for (ToDoItem item: adapter.toDoItemsList){
 
             try
             {
                 HttpClient client = new DefaultHttpClient();
                 HttpPost post = new HttpPost(webServer);
                 List<NameValuePair> postParameters = new ArrayList<NameValuePair>();
-                postParameters.add(new BasicNameValuePair("LIST_TITLE", chatReview));
+                postParameters.add(new BasicNameValuePair("LIST_TITLE", item.getName()));
                 postParameters.add(new BasicNameValuePair("CONTENT", userName));
-                postParameters.add(new BasicNameValuePair("COMPLETED_FLAG", chatNominee));
+                postParameters.add(new BasicNameValuePair("COMPLETED_FLAG", String.valueOf(item.getCompleted())));
                 postParameters.add(new BasicNameValuePair("ALIAS", userName));
                 postParameters.add(new BasicNameValuePair("PASSWORD", password));
-                postParameters.add(new BasicNameValuePair("CREATED_DATE", password));
+                postParameters.add(new BasicNameValuePair("CREATED_DATE", item.getDate()));
                 UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(postParameters);
                 post.setEntity(formEntity);
                 client.execute(post);
@@ -235,10 +239,10 @@ public class ItemViewActivity extends BaseActivity implements View.OnClickListen
                 Toast.makeText(this, "Error:" + e, Toast.LENGTH_LONG).show();
             }
 
-        }
+        };
 
     }
-*/
+
     //8.	There will be a view that displays all of the archived items.  Use a query string with the following format: http://www.youcode.ca/Lab02Get.jsp?ALIAS=username&PASSWORD=password.  The data will be returned as four strings per item in the order of “Posted Date, List Title, Content, and the Completed Flag as a 1 or 0.
 
     //9.	Implement preferences to store your username, password, two colors (radio list) and a font size. Be sure to provide a default values.

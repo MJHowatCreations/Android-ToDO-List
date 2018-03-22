@@ -54,9 +54,21 @@ public class ToDoListViewCursorAdapter extends CursorAdapter {
     }
 
     @Override
-    public void bindView(View row, Context context, final Cursor cursor) {
-        checkBox = (CheckBox)row.findViewById(R.id.todo_checkbox);
+    public View getView(int position, View convertView, ViewGroup parent) {
 
+        checkBox = (CheckBox)convertView.findViewById(R.id.todo_checkbox);
+        checkBox.setOnCheckedChangeListener(null);
+        checkBox.setChecked(getItem(position).isChecked());
+        checkBox.setTag(Integer.valueOf(position));
+        checkBox.setOnCheckedChangeListener(listener);
+
+
+
+        return convertView;
+    }
+
+    @Override
+    public void bindView(View row, Context context, final Cursor cursor) {
         itemID = cursor.getInt(cursor.getColumnIndex(DBManager.C_ITEMID));
         listID_FK = cursor.getInt(cursor.getColumnIndex(DBManager.C_ITEMLISTFK));
             name = cursor.getString(cursor.getColumnIndex(DBManager.C_ITEMNAME));
@@ -68,6 +80,7 @@ public class ToDoListViewCursorAdapter extends CursorAdapter {
             row.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
+
                     Toast.makeText(view.getContext(), "box has been long clicked", Toast.LENGTH_SHORT).show();
                     return false;
                 }
@@ -75,10 +88,10 @@ public class ToDoListViewCursorAdapter extends CursorAdapter {
 
              checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View arg0) {
+            public void onClick(View view) {
                 final boolean isChecked = checkBox.isChecked();
                 // Do something here.
-                Toast.makeText(arg0.getContext(), "box has been checked", Toast.LENGTH_SHORT).show();
+                Toast.makeText(view.getContext(), "box has been checked", Toast.LENGTH_SHORT).show();
             }
         });
         TextView textViewItemName = (TextView) row.findViewById(R.id.todo_item_name);
@@ -89,14 +102,28 @@ public class ToDoListViewCursorAdapter extends CursorAdapter {
             row.setBackgroundColor(Color.GREEN);
         }
 
-
-
-
         textViewItemName.setText(name);
         textViewDescription.setText(description);
         textViewDate.setText(date);
 
     }
+    public int getCount()
+    {
+        return toDoItemsList.size();
+    }
+    public ToDoItem getItem(int pos)
+    {
+        return toDoItemsList.get(pos);
+    }
+
+    CompoundButton.OnCheckedChangeListener listener = new CompoundButton.OnCheckedChangeListener()
+    {
+        @Override
+        public void onCheckedChanged(CompoundButton compoundButton, boolean b)
+        {
+            toDoItemsList.get((Integer)compoundButton.getTag()).setChecked(b);
+        }
+    };
 
 
 }
