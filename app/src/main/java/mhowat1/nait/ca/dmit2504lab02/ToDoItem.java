@@ -11,6 +11,7 @@ public class ToDoItem {
     String description;
     String date;
     int completed;
+    private boolean checked = false;
 
     public boolean isChecked() {
         return checked;
@@ -20,7 +21,7 @@ public class ToDoItem {
         this.checked = checked;
     }
 
-    private boolean checked;
+
 
     public ToDoItem(int itemID, int listID_FK, String name, String description, String date, int completed) {
         this.itemID = itemID;

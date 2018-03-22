@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -55,6 +56,8 @@ public class ItemViewActivity extends BaseActivity implements View.OnClickListen
         Button deleteBtn = (Button) findViewById(R.id.item_activity_delete_button);
         Button archiveBtn = (Button) findViewById(R.id.item_activity_archive_button);
         listView = (ListView) findViewById(R.id.item_activity_list);
+
+
         addBtn.setOnClickListener(this);
         completeBtn.setOnClickListener(this);
         deleteBtn.setOnClickListener(this);
@@ -96,11 +99,12 @@ public class ItemViewActivity extends BaseActivity implements View.OnClickListen
             }
             case R.id.item_activity_complete_button:
             {
-               //markAsComplete();
+               markAsComplete();
                 break;
             }
             case R.id.item_activity_delete_button:
             {
+
                 break;
 
             }
@@ -112,18 +116,21 @@ public class ItemViewActivity extends BaseActivity implements View.OnClickListen
         }
 
     }
-/*
+
     private void markAsComplete() {
 
 
         db = dbManager.getWritableDatabase();
         try {
-            for (Integer id : itemIDs) {
-                ContentValues values = new ContentValues();
-                values.put(DBManager.C_ITEMDONE, 1);
-                db.update(DBManager.ITEM_TABLE, values, DBManager.C_ITEMID + " = " + id, null);
-            }
-            ;
+            for (ToDoItem item: adapter.toDoItemsList) {
+                if (item.isChecked() == true)
+                {
+                    ContentValues values = new ContentValues();
+                    values.put(DBManager.C_ITEMDONE, 1);
+                    db.update(DBManager.ITEM_TABLE, values, DBManager.C_ITEMID + " = " + item.getItemID(), null);
+                    item.setChecked(false);
+                }
+            };
         }
         catch (SQLException e){
             Toast.makeText(this, "Error:" + e, Toast.LENGTH_LONG).show();
@@ -131,7 +138,6 @@ public class ItemViewActivity extends BaseActivity implements View.OnClickListen
         refreshList();
 
     }
-    */
 
 
     private void addNewToDoItem() {
@@ -140,7 +146,7 @@ public class ItemViewActivity extends BaseActivity implements View.OnClickListen
         String toDoName = toDoNameEditText.getText().toString();
         String toDoDescription = toDoDescriptionEditText.getText().toString();
         Date datetime = Calendar.getInstance().getTime();
-        SimpleDateFormat formatDate = new SimpleDateFormat("DD/MM/YYYY");
+        SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/YYYY");
         String toDoDate = formatDate.format(datetime);
 
         if ((toDoName.trim().equals("")) || (toDoDescription.trim().equals("")))
@@ -154,26 +160,20 @@ public class ItemViewActivity extends BaseActivity implements View.OnClickListen
             values.put(DBManager.C_ITEMNAME, toDoName);
             values.put(DBManager.C_ITEMDESCRIPTION, toDoDescription);
             values.put(DBManager.C_ITEMDATE, toDoDate);
-            values.put(DBManager.C_ITEMDONE, 1);
+            values.put(DBManager.C_ITEMDONE, 0);
             db = dbManager.getWritableDatabase();
             //5.	There will be a view that allows the addition of a new item. Each item will contain a description, association with a title, created date (as string if desired) and completed flag.
             try {
 
-                long count = db.insertOrThrow(DBManager.ITEM_TABLE, null, values);
-                Log.d(TAG, "count = " + count);
+                db.insertOrThrow(DBManager.ITEM_TABLE, null, values);
 
             }catch (SQLException e){
                 Toast.makeText(this, "Error:" + e, Toast.LENGTH_LONG).show();
 
             }
-            finally {
                 toDoNameEditText.setText("");
                 toDoDescriptionEditText.setText("");
-                db.close();
-            }
         }
-
-
         refreshList();
 
     }
@@ -190,18 +190,13 @@ public class ItemViewActivity extends BaseActivity implements View.OnClickListen
                         null,
                         null,
                         DBManager.C_ITEMID + " DESC");
-                if (cursor.getCount() >= 0) {
                     adapter = new ToDoListViewCursorAdapter(this, cursor, 0);
                     listView.setAdapter(adapter);
-                }
 
             }
             catch(SQLException e){
                 Toast.makeText(this, "Error:" + e, Toast.LENGTH_LONG).show();
 
-            }
-            finally {
-                db.close();
             }
 
 

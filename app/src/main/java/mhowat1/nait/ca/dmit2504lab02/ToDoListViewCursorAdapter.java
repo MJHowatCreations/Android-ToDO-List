@@ -26,14 +26,8 @@ import java.util.concurrent.DelayQueue;
 
 public class ToDoListViewCursorAdapter extends CursorAdapter {
 
-    public List<ToDoItem> toDoItemsList = new ArrayList<>();
+    public static List<ToDoItem> toDoItemsList = new ArrayList<>();
     private LayoutInflater cursorInflater;
-    int itemID;
-    int listID_FK;
-    String name;
-    String description;
-    String date;
-    int completed;
     CheckBox checkBox;
 
 
@@ -52,52 +46,44 @@ public class ToDoListViewCursorAdapter extends CursorAdapter {
     public View newView(Context context, Cursor cursor, ViewGroup viewGroup) {
         return cursorInflater.inflate(R.layout.to_do_item_row, viewGroup, false);
     }
-
+/*
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
         checkBox = (CheckBox)convertView.findViewById(R.id.todo_checkbox);
         checkBox.setOnCheckedChangeListener(null);
-        checkBox.setChecked(getItem(position).isChecked());
+        checkBox.setChecked(getToDoItem(position).isChecked());
         checkBox.setTag(Integer.valueOf(position));
+        checkBox.setOnCheckedChangeListener(listener);
+        Toast.makeText(convertView.getContext(), position + "box has been checked", Toast.LENGTH_SHORT).show();
+        return convertView;
+    }
+*/
+
+    @Override
+    public void bindView(View row, Context context, final Cursor cursor) {
+        checkBox = (CheckBox)row.findViewById(R.id.todo_checkbox);
+
+
+        int itemID = cursor.getInt(cursor.getColumnIndex(DBManager.C_ITEMID));
+        int listID_FK = cursor.getInt(cursor.getColumnIndex(DBManager.C_ITEMLISTFK));
+        String name = cursor.getString(cursor.getColumnIndex(DBManager.C_ITEMNAME));
+        String  description = cursor.getString(cursor.getColumnIndex(DBManager.C_ITEMDESCRIPTION));
+        int completed = cursor.getInt(cursor.getColumnIndex(DBManager.C_ITEMDONE));
+        String  date = cursor.getString(cursor.getColumnIndex(DBManager.C_ITEMDATE));
+        ToDoItem item = new ToDoItem(itemID,listID_FK,name,description,date,completed);
+        toDoItemsList.add(item);
+        int index = toDoItemsList.indexOf(item);
+        checkBox.setChecked(getToDoItem(index).isChecked());
+        checkBox.setTag(Integer.valueOf(index));
         checkBox.setOnCheckedChangeListener(listener);
 
 
 
-        return convertView;
-    }
 
-    @Override
-    public void bindView(View row, Context context, final Cursor cursor) {
-        itemID = cursor.getInt(cursor.getColumnIndex(DBManager.C_ITEMID));
-        listID_FK = cursor.getInt(cursor.getColumnIndex(DBManager.C_ITEMLISTFK));
-            name = cursor.getString(cursor.getColumnIndex(DBManager.C_ITEMNAME));
-            description = cursor.getString(cursor.getColumnIndex(DBManager.C_ITEMDESCRIPTION));
-            completed = cursor.getInt(cursor.getColumnIndex(DBManager.C_ITEMDONE));
-            date = cursor.getString(cursor.getColumnIndex(DBManager.C_ITEMDATE));
-             toDoItemsList.add(new ToDoItem(itemID,listID_FK,name,description,date,completed));
-
-            row.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
-
-                    Toast.makeText(view.getContext(), "box has been long clicked", Toast.LENGTH_SHORT).show();
-                    return false;
-                }
-            });
-
-             checkBox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final boolean isChecked = checkBox.isChecked();
-                // Do something here.
-                Toast.makeText(view.getContext(), "box has been checked", Toast.LENGTH_SHORT).show();
-            }
-        });
         TextView textViewItemName = (TextView) row.findViewById(R.id.todo_item_name);
         TextView textViewDescription = (TextView) row.findViewById(R.id.todo_item_description);
         TextView textViewDate = (TextView) row.findViewById(R.id.todo_item_date);
-
         if (completed == 1){
             row.setBackgroundColor(Color.GREEN);
         }
@@ -106,16 +92,37 @@ public class ToDoListViewCursorAdapter extends CursorAdapter {
         textViewDescription.setText(description);
         textViewDate.setText(date);
 
+/*        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b)
+            {
+                //toDoItemsList.get((Integer)compoundButton.getTag()).setChecked(b);
+            }
+        });
+
+        final int position = row.getId();
+        row.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                Toast.makeText(view.getContext(), position + "box has been checked", Toast.LENGTH_LONG).show();
+
+                return false;
+            }
+        });*/
+
+
     }
-    public int getCount()
+
+    public int getItemCount()
     {
         return toDoItemsList.size();
     }
-    public ToDoItem getItem(int pos)
+
+
+    public ToDoItem getToDoItem(int pos)
     {
         return toDoItemsList.get(pos);
     }
-
     CompoundButton.OnCheckedChangeListener listener = new CompoundButton.OnCheckedChangeListener()
     {
         @Override
@@ -124,6 +131,7 @@ public class ToDoListViewCursorAdapter extends CursorAdapter {
             toDoItemsList.get((Integer)compoundButton.getTag()).setChecked(b);
         }
     };
+
 
 
 }
