@@ -78,6 +78,7 @@ public class ToDoListViewCursorAdapter extends CursorAdapter {
         checkBox.setTag(Integer.valueOf(index));
         checkBox.setOnCheckedChangeListener(listener);
 
+        row.setOnLongClickListener(longListener);
 
 
 
@@ -99,16 +100,7 @@ public class ToDoListViewCursorAdapter extends CursorAdapter {
                 //toDoItemsList.get((Integer)compoundButton.getTag()).setChecked(b);
             }
         });
-
-        final int position = row.getId();
-        row.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                Toast.makeText(view.getContext(), position + "box has been checked", Toast.LENGTH_LONG).show();
-
-                return false;
-            }
-        });*/
+        */
 
 
     }
@@ -129,6 +121,14 @@ public class ToDoListViewCursorAdapter extends CursorAdapter {
         public void onCheckedChanged(CompoundButton compoundButton, boolean b)
         {
             toDoItemsList.get((Integer)compoundButton.getTag()).setChecked(b);
+        }
+    };
+
+    View.OnLongClickListener longListener = new View.OnLongClickListener() {
+        @Override
+        public boolean onLongClick(View view) {
+            Toast.makeText(view.getContext(), "Long click", Toast.LENGTH_LONG).show();
+            return false;
         }
     };
 
