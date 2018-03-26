@@ -7,7 +7,8 @@
     android:layout_height="match_parent"
     tools:context="mhowat1.nait.ca.dmit2504lab02.MainActivity"
     android:orientation="vertical"
-    android:weightSum="1">
+    android:weightSum="1"
+    android:id="@+id/layout_main_activity">
     
     <TextView
         android:layout_width="wrap_content"

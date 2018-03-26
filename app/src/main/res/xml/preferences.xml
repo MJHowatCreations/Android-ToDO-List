@@ -12,7 +12,22 @@
         android:summary="Use this to change your password"
         android:password="true"
         />
+    <ListPreference
+        android:key="main_bg_color_list"
+        android:title="Main Background Colour"
+        android:summary="Select your background color from the list"
+        android:entries="@array/color_names"
+        android:entryValues="@array/color_values"
+        />
+    <ListPreference
+        android:key="fontsize"
+        android:title="Font Size"
+        android:summary="Select your background color from the list"
+        android:entries="@array/color_names"
+        android:entryValues="@array/color_values"
+        />
 
 
 
+    <!--Implement preferences to store your username, password, two colors (radio list) and a font size. Be sure to provide a default values.-->
 </PreferenceScreen>

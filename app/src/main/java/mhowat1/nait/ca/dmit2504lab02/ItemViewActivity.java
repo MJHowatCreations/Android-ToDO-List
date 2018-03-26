@@ -140,12 +140,13 @@ public class ItemViewActivity extends BaseActivity implements View.OnClickListen
                         client.execute(post);
                     }
                 }
+                deleteItems();
             }
             catch(Exception e)
             {
                 Toast.makeText(this, "Error:" + e, Toast.LENGTH_LONG).show();
             }
-            deleteItems();
+
     }
 
     private void deleteItems() {

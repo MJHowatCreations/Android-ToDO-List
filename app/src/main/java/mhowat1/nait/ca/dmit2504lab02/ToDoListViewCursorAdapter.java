@@ -1,9 +1,11 @@
 package mhowat1.nait.ca.dmit2504lab02;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.graphics.Color;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,8 +26,9 @@ import java.util.concurrent.DelayQueue;
  * Created by Matthew on 2018-03-12.
  */
 
-public class ToDoListViewCursorAdapter extends CursorAdapter {
+public class ToDoListViewCursorAdapter extends CursorAdapter implements SharedPreferences.OnSharedPreferenceChangeListener {
 
+    SharedPreferences settings;
     public static List<ToDoItem> toDoItemsList = new ArrayList<>();
     private LayoutInflater cursorInflater;
     CheckBox checkBox;
@@ -63,6 +66,10 @@ public class ToDoListViewCursorAdapter extends CursorAdapter {
     @Override
     public void bindView(View row, Context context, final Cursor cursor) {
         checkBox = (CheckBox)row.findViewById(R.id.todo_checkbox);
+        settings = PreferenceManager.getDefaultSharedPreferences(row.getContext());
+        settings.registerOnSharedPreferenceChangeListener(this);
+        float fontSize = settings.getFloat("fontsize", 14);
+
 
 
         int itemID = cursor.getInt(cursor.getColumnIndex(DBManager.C_ITEMID));
@@ -85,6 +92,9 @@ public class ToDoListViewCursorAdapter extends CursorAdapter {
         TextView textViewItemName = (TextView) row.findViewById(R.id.todo_item_name);
         TextView textViewDescription = (TextView) row.findViewById(R.id.todo_item_description);
         TextView textViewDate = (TextView) row.findViewById(R.id.todo_item_date);
+        textViewDate.setTextSize(fontSize);
+        textViewDescription.setTextSize(fontSize);
+        textViewItemName.setTextSize(fontSize);
         if (completed == 1){
             row.setBackgroundColor(Color.GREEN);
         }
@@ -133,5 +143,8 @@ public class ToDoListViewCursorAdapter extends CursorAdapter {
     };
 
 
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 
+    }
 }

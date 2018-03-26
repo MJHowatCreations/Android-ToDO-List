@@ -2,10 +2,13 @@ package mhowat1.nait.ca.dmit2504lab02;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,7 +28,9 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends BaseActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener{
+public class MainActivity extends BaseActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener, SharedPreferences.OnSharedPreferenceChangeListener{
+    SharedPreferences settings;
+    View mainView;
     private static final String TAG = "MainActivity";
     SQLiteDatabase db;
     List<ToDoList> lists;
@@ -41,6 +46,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        settings = PreferenceManager.getDefaultSharedPreferences(this);
+        settings.registerOnSharedPreferenceChangeListener(this);
+        mainView = findViewById(R.id.layout_main_activity);
+        String bgColor = settings.getString("main_bg_color_list", "#FFFFFF");
+        mainView.setBackgroundColor(Color.parseColor(bgColor));
 
         listSpinner = (Spinner) findViewById(R.id.main_activity_spinner);
         listView = (ListView) findViewById(R.id.todo_item_list_view);

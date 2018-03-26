@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="color_names">
+        <item name="peach">Peach</item>
+        <item name="rust">Rust</item>
+        <item name="gray">Gray</item>
+        <item name="white">White</item>
+    </string-array>
+    <string-array name="color_values">
+        <item name="peach">#EDA991</item>
+        <item name="rust">#D47B35</item>
+        <item name="gray">#cccccc</item>
+        <item name="white">#fdf8fc</item>
+    </string-array>
+
+
+</resources>
