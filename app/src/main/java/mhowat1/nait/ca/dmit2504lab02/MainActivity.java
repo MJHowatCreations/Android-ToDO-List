@@ -29,7 +29,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener, SharedPreferences.OnSharedPreferenceChangeListener{
-    SharedPreferences settings;
     View mainView;
     private static final String TAG = "MainActivity";
     SQLiteDatabase db;
@@ -68,6 +67,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         loadSpinnerData();
 
     }
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        String bgColor = settings.getString("main_bg_color_list", "#FFFFFF" );
+        mainView.setBackgroundColor(Color.parseColor(bgColor));
+
+    }
+
 
 
     //4.	There will be a view that contains all of the local ListNames and allow one to be selected as the current list

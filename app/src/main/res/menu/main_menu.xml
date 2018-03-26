@@ -4,6 +4,9 @@
         android:id="@+id/menu_item_main_page"
         android:title="Home" />
     <item
+        android:id="@+id/menu_item_archive_page"
+        android:title="Archive" />
+    <item
         android:id="@+id/menu_item_show_preferences"
         android:title="Preferences" />
 

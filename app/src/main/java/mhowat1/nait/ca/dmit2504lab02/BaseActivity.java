@@ -19,6 +19,7 @@ public class BaseActivity extends AppCompatActivity implements SharedPreferences
 
 
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
@@ -28,11 +29,13 @@ public class BaseActivity extends AppCompatActivity implements SharedPreferences
             {
                 Intent intent = new Intent(this, MyPreferenceActivity.class);
                 this.startActivity(intent);
+                break;
             }
             case R.id.menu_item_main_page:
             {
                 Intent intent = new Intent(this, MainActivity.class);
                 this.startActivity(intent);
+                break;
             }
         }
         return true;

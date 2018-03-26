@@ -68,7 +68,7 @@ public class ToDoListViewCursorAdapter extends CursorAdapter implements SharedPr
         checkBox = (CheckBox)row.findViewById(R.id.todo_checkbox);
         settings = PreferenceManager.getDefaultSharedPreferences(row.getContext());
         settings.registerOnSharedPreferenceChangeListener(this);
-        float fontSize = settings.getFloat("fontsize", 14);
+        Float fontSize = Float.valueOf(settings.getString("fontsize", "14"));
 
 
 

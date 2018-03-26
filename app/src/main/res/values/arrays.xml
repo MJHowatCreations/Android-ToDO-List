@@ -13,5 +13,15 @@
         <item name="white">#fdf8fc</item>
     </string-array>
 
+    <string-array name="font_names">
+        <item name="small">Small</item>
+        <item name="medium">Medium</item>
+        <item name="large">Large</item>
+    </string-array>
+    <string-array name="font_values">
+        <item name="small">14</item>
+        <item name="medium">20</item>
+        <item name="large">28</item>
+    </string-array>
 
 </resources>

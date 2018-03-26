@@ -22,9 +22,9 @@
     <ListPreference
         android:key="fontsize"
         android:title="Font Size"
-        android:summary="Select your background color from the list"
-        android:entries="@array/color_names"
-        android:entryValues="@array/color_values"
+        android:summary="Select your font size from the list"
+        android:entries="@array/font_names"
+        android:entryValues="@array/font_values"
         />
 
 

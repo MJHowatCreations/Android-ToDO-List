@@ -2,9 +2,11 @@ package mhowat1.nait.ca.dmit2504lab02;
 
 import android.app.LauncherActivity;
 import android.content.ContentValues;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,7 +33,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class ItemViewActivity extends BaseActivity implements View.OnClickListener {
+public class ItemViewActivity extends BaseActivity implements View.OnClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
     TextView headerText;
     int listIDFK;
@@ -49,6 +51,8 @@ public class ItemViewActivity extends BaseActivity implements View.OnClickListen
 
         listIDFK = getIntent().getExtras().getInt("LISTFK");
         dbManager = new DBManager(this);
+        settings = PreferenceManager.getDefaultSharedPreferences(this);
+        settings.registerOnSharedPreferenceChangeListener(this);
 
         headerText = (TextView) findViewById(R.id.item_activity_header);
         Button addBtn = (Button) findViewById(R.id.item_activity_add_button);
@@ -255,6 +259,11 @@ public class ItemViewActivity extends BaseActivity implements View.OnClickListen
             }
 
 
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        refreshList();
     }
 
 
