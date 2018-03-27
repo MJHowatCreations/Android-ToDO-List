@@ -137,7 +137,6 @@ public class ToDoListViewCursorAdapter extends CursorAdapter implements SharedPr
     View.OnLongClickListener longListener = new View.OnLongClickListener() {
         @Override
         public boolean onLongClick(View view) {
-            Toast.makeText(view.getContext(), "Long click", Toast.LENGTH_LONG).show();
             return false;
         }
     };

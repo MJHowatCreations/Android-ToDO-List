@@ -3,6 +3,7 @@ package mhowat1.nait.ca.dmit2504lab02;
 import android.app.LauncherActivity;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -35,7 +36,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class ItemViewActivity extends BaseActivity implements View.OnClickListener, SharedPreferences.OnSharedPreferenceChangeListener {
+public class ItemViewActivity extends BaseActivity implements View.OnClickListener, SharedPreferences.OnSharedPreferenceChangeListener, AdapterView.OnItemLongClickListener {
 
     TextView headerText;
     int listIDFK;
@@ -65,6 +66,7 @@ public class ItemViewActivity extends BaseActivity implements View.OnClickListen
         listView = (ListView) findViewById(R.id.item_activity_list);
 
 
+        listView.setOnItemLongClickListener(this);
         addBtn.setOnClickListener(this);
         completeBtn.setOnClickListener(this);
         deleteBtn.setOnClickListener(this);
@@ -117,7 +119,7 @@ public class ItemViewActivity extends BaseActivity implements View.OnClickListen
             }
             case R.id.item_activity_archive_button:
             {
-                pd = ProgressDialog.show(this, "", "Archiving ToDo items to server...");
+                //pd = ProgressDialog.show(this, "", "Archiving ToDo items to server...");
                 new ToDoArchiver();
                 break;
 
@@ -237,6 +239,18 @@ public class ItemViewActivity extends BaseActivity implements View.OnClickListen
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         refreshList();
     }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+        int itemPK = adapter.getToDoItem(i).itemID;
+        Intent myIntent = new Intent(this, PopUpWindow.class);
+        myIntent.putExtra("ITEMPK", itemPK);
+        this.startActivity(myIntent);
+
+        return false;
+    }
+
     private class ToDoArchiver extends AsyncTask<String, Void, String>
     {
 

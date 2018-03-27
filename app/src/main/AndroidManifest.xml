@@ -23,7 +23,14 @@
         <activity
             android:name=".ItemViewActivity"
             android:windowSoftInputMode="stateAlwaysHidden" />
-        <activity android:name=".MyPreferenceActivity"></activity>
+        <activity android:name=".MyPreferenceActivity">
+
+        </activity>
+        <activity
+            android:theme="@style/AppTheme.PopUpTheme"
+            android:name=".PopUpWindow">
+
+        </activity>
     </application>
 
 </manifest>
