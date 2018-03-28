@@ -36,7 +36,7 @@ public class PopUpWindow extends AppCompatActivity implements View.OnClickListen
         getWindowManager().getDefaultDisplay().getMetrics(dm);
         int width = dm.widthPixels;
         int height = dm.heightPixels;
-        getWindow().setLayout((int)(width*0.7),(int)(height*0.3));
+        getWindow().setLayout((int)(width*0.7),(int)(height*0.4));
         Button editButton = (Button) findViewById(R.id.edit_activity_edit_button);
         headerText = (TextView) findViewById(R.id.edit_activity_header);
         editButton.setOnClickListener(this);

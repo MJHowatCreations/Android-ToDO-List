@@ -29,7 +29,7 @@ import java.util.concurrent.DelayQueue;
 public class ToDoListViewCursorAdapter extends CursorAdapter implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     SharedPreferences settings;
-    public static List<ToDoItem> toDoItemsList = new ArrayList<>();
+    public List<ToDoItem> toDoItemsList = new ArrayList<>();
     private LayoutInflater cursorInflater;
     CheckBox checkBox;
 
@@ -65,7 +65,11 @@ public class ToDoListViewCursorAdapter extends CursorAdapter implements SharedPr
 
     @Override
     public void bindView(View row, Context context, final Cursor cursor) {
+
+
         checkBox = (CheckBox)row.findViewById(R.id.todo_checkbox);
+
+
         settings = PreferenceManager.getDefaultSharedPreferences(row.getContext());
         settings.registerOnSharedPreferenceChangeListener(this);
         Float fontSize = Float.valueOf(settings.getString("fontsize", "14"));

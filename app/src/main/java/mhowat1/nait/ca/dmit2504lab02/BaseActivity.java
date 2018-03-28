@@ -31,6 +31,12 @@ public class BaseActivity extends AppCompatActivity implements SharedPreferences
                 this.startActivity(intent);
                 break;
             }
+            case R.id.menu_item_archive_page:
+            {
+                Intent intent = new Intent(this, ArchiveView.class);
+                this.startActivity(intent);
+                break;
+            }
             case R.id.menu_item_main_page:
             {
                 Intent intent = new Intent(this, MainActivity.class);

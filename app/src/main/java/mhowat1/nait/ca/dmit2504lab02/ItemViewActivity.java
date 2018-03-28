@@ -119,8 +119,9 @@ public class ItemViewActivity extends BaseActivity implements View.OnClickListen
             }
             case R.id.item_activity_archive_button:
             {
-                //pd = ProgressDialog.show(this, "", "Archiving ToDo items to server...");
-                new ToDoArchiver();
+                pd = ProgressDialog.show(this, "", "Archiving ToDo items to server...");
+                new ToDoArchiver().execute();
+
                 break;
 
             }
@@ -257,9 +258,11 @@ public class ItemViewActivity extends BaseActivity implements View.OnClickListen
         @Override
         protected String doInBackground(String... strings) {
 
+
+
             String userName = settings.getString("username", "Matthew");
-            String password = settings.getString("user_password", "*****");
-            String webServer = "http://www.youcode.ca/Lab02Post";
+            String password = settings.getString("user_password", "password");
+            String webServer = "http://www.youcode.ca/Lab02Post.jsp";
             try {
                 for (ToDoItem item : adapter.toDoItemsList) {
                     if (item.isChecked()) {
@@ -268,7 +271,7 @@ public class ItemViewActivity extends BaseActivity implements View.OnClickListen
                         HttpPost post = new HttpPost(webServer);
                         List<NameValuePair> postParameters = new ArrayList<NameValuePair>();
                         postParameters.add(new BasicNameValuePair("LIST_TITLE", item.getName()));
-                        postParameters.add(new BasicNameValuePair("CONTENT", userName));
+                        postParameters.add(new BasicNameValuePair("CONTENT", item.getDescription()));
                         postParameters.add(new BasicNameValuePair("COMPLETED_FLAG", String.valueOf(item.getCompleted())));
                         postParameters.add(new BasicNameValuePair("ALIAS", userName));
                         postParameters.add(new BasicNameValuePair("PASSWORD", password));
