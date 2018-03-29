@@ -9,6 +9,8 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
+import android.os.Build;
+import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -74,6 +76,10 @@ public class ItemViewActivity extends BaseActivity implements View.OnClickListen
         queryHeaderName();
 
         refreshList();
+        if(Build.VERSION.SDK_INT > 9){
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
     }
 
     private void queryHeaderName() {
@@ -119,8 +125,9 @@ public class ItemViewActivity extends BaseActivity implements View.OnClickListen
             }
             case R.id.item_activity_archive_button:
             {
-                pd = ProgressDialog.show(this, "", "Archiving ToDo items to server...");
-                new ToDoArchiver().execute();
+                archiveItems();
+               // pd = ProgressDialog.show(this, "", "Archiving ToDo items to server...");
+              //  new ToDoArchiver().execute();
 
                 break;
 
@@ -128,6 +135,39 @@ public class ItemViewActivity extends BaseActivity implements View.OnClickListen
         }
 
     }
+
+    private void archiveItems() {
+        String userName = settings.getString("username", "Matthew");
+        String password = settings.getString("user_password", "password");
+        String webServer = "http://www.youcode.ca/Lab02Post.jsp";
+        try {
+            for (ToDoItem item : adapter.toDoItemsList) {
+                if (item.isChecked()) {
+
+                    HttpClient client = new DefaultHttpClient();
+                    HttpPost post = new HttpPost(webServer);
+                    List<NameValuePair> postParameters = new ArrayList<NameValuePair>();
+                    postParameters.add(new BasicNameValuePair("LIST_TITLE", item.getName()));
+                    postParameters.add(new BasicNameValuePair("CONTENT", item.getDescription()));
+                    postParameters.add(new BasicNameValuePair("COMPLETED_FLAG", String.valueOf(item.getCompleted())));
+                    postParameters.add(new BasicNameValuePair("ALIAS", userName));
+                    postParameters.add(new BasicNameValuePair("PASSWORD", password));
+                    postParameters.add(new BasicNameValuePair("CREATED_DATE", item.getDate()));
+                    UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(postParameters);
+                    post.setEntity(formEntity);
+                    client.execute(post);
+                }
+            }
+            deleteItems();
+        }
+        catch(Exception e)
+        {
+            Toast.makeText(ItemViewActivity.this, "Error:" + e, Toast.LENGTH_LONG).show();
+        }
+
+
+    }
+
     private void deleteItems() {
         db = dbManager.getWritableDatabase();
         try {
